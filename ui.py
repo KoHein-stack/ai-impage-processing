@@ -30,15 +30,15 @@ def system_monitor():
     </style>
     """, unsafe_allow_html=True)
     """Enhanced system monitor with refresh capability"""
-    # with st.sidebar.expander("⚙️ System Resources", expanded=True):
+    # with st.sidebar.expander("System Resources", expanded=True):
     #     # Add refresh button at the top
-    #     refresh = st.button("🔄 Refresh", key="sys_refresh")
+    #     refresh = st.button("Refresh", key="sys_refresh")
         
     #     # CPU Section with better measurement
     #     cpu_info = cpuinfo.get_cpu_info()
     #     cpu_percent = psutil.cpu_percent(interval=0.5)  # More responsive measurement
         
-    #     st.markdown("**💻 CPU**")
+    #     st.markdown("**CPU**")
     #     col1, col2 = st.columns([1, 2])
     #     with col1:
     #         st.metric("Usage", f"{cpu_percent}%")
@@ -48,7 +48,7 @@ def system_monitor():
    
     #     # Enhanced RAM Section
     #     ram = psutil.virtual_memory()
-    #     st.markdown("**🧠 RAM**")
+    #     st.markdown("**RAM**")
     #     col1, col2 = st.columns([1, 2])
     #     with col1:
     #         st.metric("Used", f"{ram.used/1e9:.1f} GB")
@@ -57,14 +57,14 @@ def system_monitor():
     #         st.progress(ram.percent/100)
         
         
-    with st.sidebar.expander("⚙️ System Resources", expanded=True):
+    with st.sidebar.expander("System Resources", expanded=True):
          # Add refresh button at the top
-        refresh = st.button("🔄 Refresh", key="sys_refresh")
+        refresh = st.button("Refresh", key="sys_refresh")
         # CPU Section
         cpu_info = cpuinfo.get_cpu_info()
         cpu_percent = psutil.cpu_percent(interval=1)  # Add interval to get accurate value
 
-        st.markdown("**💻 CPU**")
+        st.markdown("**CPU**")
         col1, col2 = st.columns([1, 2])
         with col1:
             st.metric("Usage", f"{cpu_percent}%")
@@ -74,7 +74,7 @@ def system_monitor():
    
         # RAM Section
         ram = psutil.virtual_memory()
-        st.markdown("**🧠 RAM**")
+        st.markdown("**RAM**")
         col1, col2 = st.columns([1, 2])
         with col1:
             st.metric("Used", f"{ram.used/1e9:.1f} GB")
@@ -83,7 +83,7 @@ def system_monitor():
             st.progress(ram.percent/100)
         
         # GPU Section
-        st.markdown("**🖥️ GPU**")
+        st.markdown("**GPU**")
         if torch.cuda.is_available():
             device = torch.cuda.current_device()
             gpu_mem = torch.cuda.get_device_properties(device).total_memory/1e9
@@ -107,7 +107,7 @@ def system_monitor():
                    f"</ul></details>", 
                    unsafe_allow_html=True)
         else:
-            st.warning("Not available", icon="⚠️")
+            st.warning("Not available")
 
         # Force refresh if button clicked
         if refresh:
@@ -151,7 +151,7 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("🖼️ AI Image Processing Suite")
+    st.title("AI Image Processing Suite")
     st.caption("Extract text, segment objects, or generate captions using advanced AI models")
     
     # System monitor in sidebar
@@ -159,7 +159,7 @@ def main():
         st.header("System Resources")
         system_monitor()
         st.markdown("---")
-        st.caption("ℹ️ Model loading happens automatically on first run")
+        st.caption("Model loading happens automatically on first run")
 
     # Model loading section (unchanged logic)
     if 'models' not in st.session_state:
@@ -169,11 +169,11 @@ def main():
             loading_placeholder = st.empty()
             
             with loading_placeholder.container():
-                with st.spinner("🚀 Loading AI models for the first time..."):
+                with st.spinner("Loading AI models for the first time..."):
                     st.session_state.yolo, st.session_state.ocr, st.session_state.processor, st.session_state.caption_model  = model.load_models()
-                    st.success("✅ YOLO model loaded")
-                    st.success("✅ EasyOCR initialized")
-                    st.success("✅ Blip Model initialized")
+                    st.success("YOLO model loaded")
+                    st.success("EasyOCR initialized")
+                    st.success("BLIP model initialized")
                 
                 time.sleep(2)  # Show messages for 2 seconds
             
@@ -182,7 +182,7 @@ def main():
             st.session_state.models_loaded = True
             
             # Small persistent indicator
-            st.toast("Models ready!", icon="🤖")
+            st.toast("Models ready!")
         
         # Subsequent loads will skip the visual flow
         else:
@@ -211,7 +211,7 @@ def main():
         with original_col2:
             st.markdown("**Image Details**")
             st.write(f"Format: {image.format}")
-            st.write(f"Size: {image.size[0]}×{image.size[1]} pixels")
+            st.write(f"Size: {image.size[0]} x {image.size[1]} pixels")
             st.write(f"Mode: {image.mode}")
         
         # Processing options with cards-like UI
@@ -225,14 +225,14 @@ def main():
         
         # Processing options as tabs for better UX
         tab1, tab2, tab3 = st.tabs([
-            "🔍 Text Extraction (OCR)", 
-            "✂️ Object Segmentation", 
-            "📝 Image Captioning"
+            "Text Extraction (OCR)", 
+            "Object Segmentation", 
+            "Image Captioning"
         ])
         
         with tab1:
             if st.button("Extract Text", key="ocr_btn", type="primary"):
-                with st.spinner("🔍 Scanning for text..."):
+                with st.spinner("Scanning for text..."):
                     # [Keep existing OCR processing code]
                     # Display results in card-like containers
                     image_rgb, extracted_text, boxes = ocr.process_image_for_ocr(temp_path, st.session_state.ocr)
@@ -258,7 +258,7 @@ def main():
         
         with tab2:
             if st.button("Segment Objects", key="seg_btn", type="primary"):
-                with st.spinner("✂️ Identifying objects..."):
+                with st.spinner("Identifying objects..."):
                     segmented_img, object_names, original_rgb = remove_background(temp_path, st.session_state.yolo)
 
                     st.markdown("---")
@@ -284,7 +284,7 @@ def main():
 
         with tab3:
             if st.button("Generate Caption", key="caption_btn", type="primary"):
-                with st.spinner("📝 Analyzing image content..."):
+                with st.spinner("Analyzing image content..."):
                     # [Keep existing captioning code]
                     caption= image_captionings(temp_path, st.session_state.processor, st.session_state.caption_model)
                     
@@ -324,3 +324,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
